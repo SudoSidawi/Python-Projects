@@ -49,7 +49,7 @@ while running_bank < 5000 and running_bank > 0:
             print("Dealer flipped a ", dealer_cards[-1], dealer_cards, "with a total of ", sum(dealer_cards))
 
         # Winning Conditions between player and dealer
-        if player_cards == dealer_cards:
+        if sum(player_cards) == sum(dealer_cards):
             print("It's a push")
         if sum(dealer_cards) <= 21 and sum(dealer_cards) > sum(player_cards):
             print("The House Wins!")
