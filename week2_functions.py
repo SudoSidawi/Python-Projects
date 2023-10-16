@@ -1,75 +1,52 @@
-'''import random as rd
+import random
+import pandas as pd
 
-answer = rd.randint(1, 100)
-print(answer)
-print('You have 3 guesses to find the secret number')
-guess_list = []
-guess = int(input("Guess a number between 1 and 100:  "))
-guess_list.append(guess)
-tries = 3
+def input_validation(target):
+    if target == '':
+        print("You did not enter a response")
+        return False
+    elif not target.isdigit():
+        print('You need to enter a whole number')
+        return False
+    return True
+
+answer = random.randint(1, 10)
+print("The correct answer is:", answer)
+
 guess = 0
+guess_history = []
+attempt_number = 0
 
-def input_validation(guess):
-    tries -= 1
-    if guess == '':
-        print("You did not enter a response")
-    elif guess == float:
-        print('You need to enter a whole number')
-    else:
-        return guess
-
-
-while tries > 1 and guess != answer:
-    #tries -= 1
-    print(f'You have {tries} tries remaining.')
-    guess = int(input("Guess again:  "))
-    input_validation(guess)
-    if guess == answer:
-        print("You guessed correctly, you've won!")
-    elif guess < answer:
-        print("Too low")
-    else:
-        print("Too high")
-
-if guess != answer:
-    print("Game over! Sorry you didn't guess correctly.")
-else:
-    print("You guessed correctly, you've won!")
-    '''
-
-import random as rd
-
-answer = rd.randint(1, 100)
-print(answer)
-print('You have 3 guesses to find the secret number')
-guess_list = []
-tries = 3
-
-def input_validation(guess):
-    global tries  # Declare 'tries' as a global variable
-    tries -= 1
-    if guess == '':
-        print("You did not enter a response")
-    elif not guess.isdigit():  # Check if the input is not a digit
-        print('You need to enter a whole number')
-    else:
-        return int(guess)
-
-while tries > 0:
-    print(f'You have {tries} tries remaining.')
-    guess = input("Guess a number between 1 and 100:  ")
-    valid_guess = input_validation(guess)
-    
-    if valid_guess is not None:
-        guess_list.append(valid_guess)
-
-        if valid_guess == answer:
-            print("You guessed correctly, you've won!")
-            break
-        elif valid_guess < answer:
-            print("Too low")
+while guess != answer:
+    guess = input("Guess a number between 1 and 10: ")
+    if input_validation(guess):
+        valid_guess = int(guess)
+        guess_history.append(valid_guess)
+        attempt_number += 1
+        if valid_guess < answer:
+            print("You are too low.")
+        elif valid_guess > answer:
+            print('You are too high')
         else:
-            print("Too high")
+            guess = valid_guess
+            print('You have won!')
 
-if tries == 0:
-    print("Game over! Sorry, you didn't guess correctly.")
+print('Game Over! You took', len(guess_history), 'guesses.')
+print(f'Your history of guesses were {guess_history}')
+print(attempt_number)
+
+
+#Second part of the game that takes your input history and multiplies it by a multiplier of your choice
+multiplier = input('Provide a variable that will multiply your guess history: ')
+
+# Check if the multiplier is a valid number
+if multiplier.isdigit():
+    #ensures it is an integer
+    multiplier = int(multiplier)
+    #converts the list to a pandas list
+    series = pd.Series(guess_history)
+    #mulitplies the list by the multiplier
+    result = series * multiplier
+    print(f'Multiplied guess history: {result}')
+else:
+    print("Invalid multiplier. Please enter a valid number.")
